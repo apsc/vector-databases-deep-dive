@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50051:50051"
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    environment:
+      # Standard settings
+      QUERY_DEFAULTS_LIMIT: 20
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: "true"
+      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+      CLUSTER_HOSTNAME: "node1"
+      
+      # Configure multi2vec-clip module
+      ENABLE_MODULES: "multi2vec-clip"
+      DEFAULT_VECTORIZER_MODULE: "multi2vec-clip"
+      CLIP_INFERENCE_API: "http://multi2vec-clip:8080"
+
+  multi2vec-clip:
+    image: cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1
+    restart: unless-stopped
+    environment:
+      # Set to "1" if you have GPU support; otherwise "0"
+      ENABLE_CUDA: "0"
+
+volumes:
+  weaviate_data:

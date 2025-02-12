@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # From the provided `.env` file
 load_dotenv()
 
-
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 def connect_to_demo_db() -> WeaviateClient:
     """
     Helper function to connect to the demo Weaviate database.
@@ -20,8 +20,8 @@ def connect_to_demo_db() -> WeaviateClient:
 
         # OpenAI API key for queries that require it
         # Edit this to provide your own
-        headers={"X-OpenAI-Api-Key": os.getenv("OPENAI_APIKEY")},
-    )  
+        headers={"X-Goog-Studio-Api-Key": GEMINI_API_KEY, "GOOGLE_APIKEY":GEMINI_API_KEY, "X-Goog-Api-Key":GEMINI_API_KEY}  # Gemini key for AI Studio
+)  
     return client
     
 
